@@ -149,8 +149,8 @@ class MqPlus(adplus.Mqtt):
             **kwargs,
         )
         if isinstance(cancel_handle, asyncio.Task):
-            # Apparently I don't understand asyncio.
-            # For some reason this is giving me a asycio Task, instead of the value itself.
+            # I think this is a bug in appdaemon
+            # Issue: https://github.com/AppDaemon/appdaemon/issues/1085
             self.warn(
                 "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!"
             )
