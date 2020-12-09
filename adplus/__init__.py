@@ -38,10 +38,10 @@ import types
 from functools import partial, partialmethod
 from pathlib import Path
 
+from adplus.mqplus import MqPlus
 from appdaemon.adbase import ADBase
 from appdaemon.plugins.hass.hassapi import Hass
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
-from adplus.mqplus import MqPlus
 
 from .args import normalized_args, weekdays_as_set
 from .logbook import logging_monkeypatch

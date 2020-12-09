@@ -21,13 +21,9 @@ This is not working.
 from functools import partialmethod
 from typing import Union
 
+from adplus.mqplus import MqPlus
 from appdaemon.plugins.hass.hassapi import Hass
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
-from appdaemon.adbase import ADBase
-from adplus.mqplus import MqPlus
-import logging
-from pathlib import Path
-import appdaemon.logging as adlogging
 
 AnyADBase = Union[Hass, Mqtt, MqPlus]
 
@@ -40,13 +36,14 @@ Create new logger that logs:
 
 """
 
+
 def _write_logbook(self, message, level=None, entity_id=None, domain=None):
     """
     Note - this only allows a single, pre-merged message.
     This will NOT work as implemented: x.log('{value1}', {'value1': 'value'})
     """
     self.log(message)
-    if self.get_user_log('logbook'):
+    if self.get_user_log("logbook"):
         self.log(message, log="logbook")
 
     kwargs = {}
