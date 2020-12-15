@@ -2,11 +2,11 @@ import asyncio
 import atexit
 import json
 
-import adplus
 from appdaemon.utils import sync_wrapper
+from appdaemon.plugins.mqtt.mqttapi import Mqtt
 
 
-class MqPlus(adplus.Mqtt):
+class MqPlus(Mqtt):
     """
     Helper that makes using MQ as easy as using normal AD events.
 
@@ -151,8 +151,8 @@ class MqPlus(adplus.Mqtt):
         if isinstance(cancel_handle, asyncio.Task):
             # I think this is a bug in appdaemon
             # Issue: https://github.com/AppDaemon/appdaemon/issues/1085
-            self.warn(
-                "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!"
+            self.log(
+                "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!", level="WARNING"
             )
             cancel_handle = cancel_handle._result
         self._listener_register(event, cancel_handle)
@@ -162,13 +162,13 @@ class MqPlus(adplus.Mqtt):
     @sync_wrapper
     async def mq_cancel_listen_event(self, handle):
         event_name = self._registered_listeners.get(handle)
-        self.debug(
-            f"cancel_listen_event handle: {handle} - event_name: '{event_name}''"
+        self.log(
+            f"cancel_listen_event handle: {handle} - event_name: '{event_name}''", level="DEBUG"
         )
         self.ha_cancel_listen_event(handle)
         if event_name is None:
-            self.warn(
-                f"cancel_listen_event - no event_name found for handle: {handle}. Can not unsubscribe"
+            self.log(
+                f"cancel_listen_event - no event_name found for handle: {handle}. Can not unsubscribe", level="WARNING"
             )
         else:
             self.mqtt_unsubscribe(event_name, namespace=self.namespace)
