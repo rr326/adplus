@@ -38,14 +38,13 @@ import types
 from functools import partial, partialmethod
 from pathlib import Path
 
-from adplus.mqplus import MqPlus
-from appdaemon.adbase import ADBase
-from appdaemon.plugins.hass.hassapi import Hass
-from appdaemon.plugins.mqtt.mqttapi import Mqtt
+from adplus.mqplus import MqPlus as _MqPlus
+from appdaemon.plugins.hass.hassapi import Hass as _Hass
+from appdaemon.plugins.mqtt.mqttapi import Mqtt as _Mqtt
 
 from .args import normalized_args, weekdays_as_set
-from .logbook import logging_monkeypatch
-from .utils import ConfigException, _update_state
+from .logbook import logging_monkeypatch, LoggingMixin
+from .utils import ConfigException, _update_state, UpdateStateMixin
 
 #
 # Reload all modules
@@ -57,16 +56,16 @@ but does not know to reload changes to supporting code.
 for module in globals().copy().values():
     if isinstance(module, types.ModuleType):
         importlib.reload(module)
-#
-# Monkey Patch
-#
-Hass.update_state = _update_state
-Mqtt.update_state = _update_state
-
 
 #
-# Logging Monkey Patch
+# Monkey Patch - Logging, UpdateSate
 #
-logging_monkeypatch(Hass)
-logging_monkeypatch(Mqtt)
-logging_monkeypatch(MqPlus)
+
+class Hass(_Hass, LoggingMixin, UpdateStateMixin):
+    pass
+
+class Mqtt(_Mqtt, LoggingMixin, UpdateStateMixin):
+    pass
+
+class MqPlus(_MqPlus, LoggingMixin, UpdateStateMixin):
+    pass

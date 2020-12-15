@@ -19,7 +19,7 @@ This is not working.
             * hass.info("message", _skip_halogbook = True) # Skip HomeAssistant logbook
 """
 from functools import partialmethod
-from typing import Union
+from typing import Union, Protocol
 
 from adplus.mqplus import MqPlus
 from appdaemon.plugins.hass.hassapi import Hass
@@ -71,3 +71,41 @@ def logging_monkeypatch(obj: AnyADBase):
     obj.lb_log = partialmethod(_write_logbook, level="INFO")
     obj.lb_error = partialmethod(_write_logbook, level="ERROR")
     obj.lb_critical = partialmethod(_write_logbook, level="CRITICAL")
+
+
+# For type hints
+class _Loggable(Protocol):
+    def log(self, *args, **kwargs):
+        pass
+
+
+class LoggingMixin(_Loggable):
+    def debug(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="DEBUG")
+    def info(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="INFO")
+    def warn(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="WARNING")
+    def warning(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="WARNING")
+    def error(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="ERROR")
+    def critical(self, *args, **kwargs):
+        return self.log(*args, **kwargs, level="CRITICAL")
+
+    def _write_logbook(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs)
+
+    def lb_debug(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="DEBUG")
+    def lb_info(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="INFO")
+    def lb_warn(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="WARNING")
+    def lb_warning(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="WARNING")
+    def lb_error(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="ERROR")
+    def lb_critical(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="CRITICAL")        
+    

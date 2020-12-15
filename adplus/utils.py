@@ -1,4 +1,5 @@
 from appdaemon.utils import sync_wrapper
+from typing import Protocol
 
 
 @sync_wrapper
@@ -24,6 +25,10 @@ async def _update_state(self, entity, state=None, attributes={}):
         entity, state=merged_state, attributes=merged_attributes
     )
 
+
+class UpdateStateMixin():
+    def update_state(self, entity, state=None, attributes={}):
+        return _update_state(self, entity, state, attributes)
 
 class ConfigException(Exception):
     """
