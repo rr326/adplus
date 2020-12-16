@@ -2,8 +2,8 @@ import asyncio
 import atexit
 import json
 
-from appdaemon.utils import sync_wrapper
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
+from appdaemon.utils import sync_wrapper
 
 
 class MqPlus(Mqtt):
@@ -152,7 +152,8 @@ class MqPlus(Mqtt):
             # I think this is a bug in appdaemon
             # Issue: https://github.com/AppDaemon/appdaemon/issues/1085
             self.log(
-                "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!", level="WARNING"
+                "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!",
+                level="WARNING",
             )
             cancel_handle = cancel_handle._result
         self._listener_register(event, cancel_handle)
@@ -163,12 +164,14 @@ class MqPlus(Mqtt):
     async def mq_cancel_listen_event(self, handle):
         event_name = self._registered_listeners.get(handle)
         self.log(
-            f"cancel_listen_event handle: {handle} - event_name: '{event_name}''", level="DEBUG"
+            f"cancel_listen_event handle: {handle} - event_name: '{event_name}''",
+            level="DEBUG",
         )
         self.ha_cancel_listen_event(handle)
         if event_name is None:
             self.log(
-                f"cancel_listen_event - no event_name found for handle: {handle}. Can not unsubscribe", level="WARNING"
+                f"cancel_listen_event - no event_name found for handle: {handle}. Can not unsubscribe",
+                level="WARNING",
             )
         else:
             self.mqtt_unsubscribe(event_name, namespace=self.namespace)
