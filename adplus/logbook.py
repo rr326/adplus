@@ -18,14 +18,7 @@ This is not working.
             * hass.info("message", _skip_adlogbook = True) # Skip Appdaemon logbook
             * hass.info("message", _skip_halogbook = True) # Skip HomeAssistant logbook
 """
-from functools import partialmethod
-from typing import Union, Protocol
-
-from adplus.mqplus import MqPlus
-from appdaemon.plugins.hass.hassapi import Hass
-from appdaemon.plugins.mqtt.mqttapi import Mqtt
-
-AnyADBase = Union[Hass, Mqtt, MqPlus]
+from typing import Protocol
 
 """
 Create new logger that logs:
@@ -54,25 +47,6 @@ def _write_logbook(self, message, level=None, entity_id=None, domain=None):
     self.call_service("logbook/log", name=self.name, message=message, **kwargs)
 
 
-def logging_monkeypatch(obj: AnyADBase):
-    # Logging helpers
-    obj.debug = partialmethod(obj.log, level="DEBUG")
-    obj.info = partialmethod(obj.log, level="INFO")
-    obj.warn = partialmethod(obj.log, level="WARNING")
-    obj.warning = partialmethod(obj.log, level="WARNING")
-    # obj.error = partialmethod(obj.log, level="ERROR")
-    obj.critical = partialmethod(obj.log, level="CRITICAL")
-
-    # Logbook
-    obj.lb_debug = partialmethod(_write_logbook, level="DEBUG")
-    obj.lb_info = partialmethod(_write_logbook, level="INFO")
-    obj.lb_warn = partialmethod(_write_logbook, level="WARNING")
-    obj.lb_warning = partialmethod(_write_logbook, level="WARNING")
-    obj.lb_log = partialmethod(_write_logbook, level="INFO")
-    obj.lb_error = partialmethod(_write_logbook, level="ERROR")
-    obj.lb_critical = partialmethod(_write_logbook, level="CRITICAL")
-
-
 # For type hints
 class _Loggable(Protocol):
     def log(self, *args, **kwargs):
@@ -82,14 +56,19 @@ class _Loggable(Protocol):
 class LoggingMixin(_Loggable):
     def debug(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="DEBUG")
+
     def info(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="INFO")
+
     def warn(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="WARNING")
+
     def warning(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="WARNING")
+
     def error(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="ERROR")
+
     def critical(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="CRITICAL")
 
@@ -98,14 +77,18 @@ class LoggingMixin(_Loggable):
 
     def lb_debug(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="DEBUG")
+
     def lb_info(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="INFO")
+
     def lb_warn(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="WARNING")
+
     def lb_warning(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="WARNING")
+
     def lb_error(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="ERROR")
+
     def lb_critical(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="CRITICAL")        
-    
+        return self._write_logbook(*args, **kwargs, level="CRITICAL")

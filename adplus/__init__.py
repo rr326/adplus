@@ -32,19 +32,17 @@ available in AD, this basically just adds new functionality to AD
 
 """
 import importlib
-import logging
-import sys
+import logging  # noqa
+import sys  # noqa
 import types
-from functools import partial, partialmethod
-from pathlib import Path
 
-from adplus.mqplus import MqPlus as _MqPlus
 from appdaemon.plugins.hass.hassapi import Hass as _Hass
 from appdaemon.plugins.mqtt.mqttapi import Mqtt as _Mqtt
 
-from .args import normalized_args, weekdays_as_set
-from .logbook import logging_monkeypatch, LoggingMixin
-from .utils import ConfigException, _update_state, UpdateStateMixin
+from .args import normalized_args, weekdays_as_set  # noqa
+from .logbook import LoggingMixin
+from .mqplus import MqPlus  # noqa
+from .utils import ConfigException, UpdateStateMixin  # noqa
 
 #
 # Reload all modules
@@ -61,11 +59,10 @@ for module in globals().copy().values():
 # Monkey Patch - Logging, UpdateSate
 #
 
+
 class Hass(_Hass, LoggingMixin, UpdateStateMixin):
     pass
 
-class Mqtt(_Mqtt, LoggingMixin, UpdateStateMixin):
-    pass
 
-class MqPlus(_MqPlus, LoggingMixin, UpdateStateMixin):
+class Mqtt(_Mqtt, LoggingMixin, UpdateStateMixin):
     pass
