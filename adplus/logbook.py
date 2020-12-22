@@ -81,6 +81,9 @@ class LoggingMixin(_Loggable):
     def lb_info(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="INFO")
 
+    def lb_log(self, *args, **kwargs):
+        return self._write_logbook(*args, **kwargs, level="INFO")
+
     def lb_warn(self, *args, **kwargs):
         return self._write_logbook(*args, **kwargs, level="WARNING")
 
