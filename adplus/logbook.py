@@ -30,23 +30,6 @@ Create new logger that logs:
 """
 
 
-def _write_logbook(self, message, level=None, entity_id=None, domain=None):
-    """
-    Note - this only allows a single, pre-merged message.
-    This will NOT work as implemented: x.log('{value1}', {'value1': 'value'})
-    """
-    self.log(message)
-    if self.get_user_log("logbook"):
-        self.log(message, log="logbook")
-
-    kwargs = {}
-    if entity_id:
-        kwargs["entity_id"] = entity_id
-    if domain:
-        kwargs["domain"] = domain
-    self.call_service("logbook/log", name=self.name, message=message, **kwargs)
-
-
 # For type hints
 class _Loggable(Protocol):
     def log(self, *args, **kwargs):
@@ -72,26 +55,39 @@ class LoggingMixin(_Loggable):
     def critical(self, *args, **kwargs):
         return self.log(*args, **kwargs, level="CRITICAL")
 
-    def _write_logbook(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs)
+    def lb_debug(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="DEBUG")
 
-    def lb_debug(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="DEBUG")
+    def lb_info(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="INFO")
 
-    def lb_info(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="INFO")
+    def lb_log(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="INFO")
 
-    def lb_log(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="INFO")
+    def lb_warn(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="WARNING")
 
-    def lb_warn(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="WARNING")
+    def lb_warning(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="WARNING")
 
-    def lb_warning(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="WARNING")
+    def lb_error(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="ERROR")
 
-    def lb_error(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="ERROR")
+    def lb_critical(self, message, **kwargs):
+        return self._write_logbook(message, **kwargs, level="CRITICAL")
 
-    def lb_critical(self, *args, **kwargs):
-        return self._write_logbook(*args, **kwargs, level="CRITICAL")
+    def _write_logbook(self, message, level=None, entity_id=None, domain=None):
+        """
+        Note - this only allows a single, pre-merged message.
+        This will NOT work as implemented: x.log('{value1}', {'value1': 'value'})
+        """
+        self.log(message, level=level)
+        if self.get_user_log("logbook"):
+            self.log(message, log="logbook", level=level)
+
+        kwargs = {}
+        if entity_id:
+            kwargs["entity_id"] = entity_id
+        if domain:
+            kwargs["domain"] = domain
+        self.call_service("logbook/log", name=self.name, message=message, **kwargs)
