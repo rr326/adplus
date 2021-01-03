@@ -5,8 +5,11 @@ import json
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
 from appdaemon.utils import sync_wrapper
 
+from .logbook import LoggingMixin
+from .utils import UpdateStateMixin
 
-class MqPlus(Mqtt):
+
+class MqPlus(Mqtt, LoggingMixin, UpdateStateMixin):
     """
     Helper that makes using MQ as easy as using normal AD events.
 
