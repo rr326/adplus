@@ -85,4 +85,4 @@ class LoggingMixin(ADAPI):
             kwargs["entity_id"] = entity_id
         if domain:
             kwargs["domain"] = domain
-        self.call_service("logbook/log", name=self.name, message=message, **kwargs)        
+        self.call_service("logbook/log", name=self.name, message=message, **kwargs)
