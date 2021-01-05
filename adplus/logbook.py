@@ -18,7 +18,6 @@ This is not working.
             * hass.info("message", _skip_adlogbook = True) # Skip Appdaemon logbook
             * hass.info("message", _skip_halogbook = True) # Skip HomeAssistant logbook
 """
-from typing import Protocol
 
 """
 Create new logger that logs:
