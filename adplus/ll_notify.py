@@ -17,9 +17,6 @@ METHODS = [
 class LLNotifyMixin(Hass):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.log("ll_notify helper initialized")
-
         if self.ll_notify_component_installed():
             self.add_methods()
         else:
@@ -32,7 +29,7 @@ class LLNotifyMixin(Hass):
         return False
 
     def add_methods(self):
-        def call_ll_notify_service(method, *args, **kwargs):
+        def call_ll_notify_service(method, message, *args, **kwargs):
                 """Pass through directly via call_service"""
                 self.log(
                     f"ADPLUS PASSTHROUGH: ll_notify/{method}, args: {args}, kwargs: {kwargs}",
@@ -41,7 +38,7 @@ class LLNotifyMixin(Hass):
                 print(
                     f"ADPLUS PASSTHROUGH: ll_notify/{method}, args: {args}, kwargs: {kwargs}, cb: {id(call_ll_notify_service)}"
                 )
-                return self.call_service(f"ll_notify/{method}", **kwargs)
+                return self.call_service(f"ll_notify/{method}", message=message, **kwargs)
 
         for method in METHODS:            
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method))
