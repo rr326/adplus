@@ -73,16 +73,30 @@ This will auto-reload all the modules within AdPlus.
 ## update_state
 Appdaemon has a [`self.set_state()`](https://appdaemon.readthedocs.io/en/latest/AD_API_REFERENCE.html#appdaemon.adapi.ADAPI.set_state) function. It seems that this *should* update only changed states. And it *sometimes* seems to do just that. But I ran into problems where it was deleting my `friendly_name` when I was not including that in the attributes. I asked in forum or somewhere (and can no longer find it) and the response was that you can't trust that it won't overwrite un-included attributes.
 
-So now, `self.update_state()` will update only changed states. 
+So now, `self.update_state()` will update only changed states.
+
+## ll_notify Helpers
+[ll_notify](https://github.com/rr326/ha_ll_notify) Is a component that adds front-end notifications to Lovelace. AdPlus adds simple helper functions:
+* `self.ll_warning(message, **kwargs)`
+* `self.ll_error(message, **kwargs)`
+* `self.ll_alert(message, **kwargs)`
+* `self.ll_confirm(message, **kwargs)`
+* `self.ll_dismiss_all(**kwargs)`
+
+Usage:
+```python
+self.ll_success("This will create a success notification in Lovelace (5 secs)")
+self.ll_error("This will create dismissable error notification in Lovelace", wait=0)
+```
 
 ## Logging - self.debug, self.warn, ...
 Appdaemon includes `self.log()` and `self.error()`. But if you want to do a `warn` you have to do something cumbersome like `self.log('message', level = "WARN")`. That's annoying.  With AdPlus you can do:
-* self.log()
-* self.info()
-* self.warn()
-* self.warning()
-* self.error()
-* self.critical()
+* `self.log()`
+* `self.info()`
+* `self.warn()`
+* `self.warning()`
+* `self.error()`
+* `self.critical()`
 
 ## Logging - Logbook
 I like to log certain key messages to a custom AppDaemon logbook that tracks my main AD log messages, without getting lost within a ton of debug info.

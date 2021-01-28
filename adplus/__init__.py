@@ -55,7 +55,6 @@ but does not know to reload changes to supporting code.
 """
 for module in globals().copy().values():
     if isinstance(module, types.ModuleType):
-        print(f'reloading module: {module}')
         importlib.reload(module)
 
 #
