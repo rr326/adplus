@@ -7,9 +7,10 @@ from appdaemon.utils import sync_wrapper
 
 from .logbook import LoggingMixin
 from .utils import UpdateStateMixin
+from .ll_notify import LLNotifyMixin
 
 
-class MqPlus(Mqtt, LoggingMixin, UpdateStateMixin):
+class MqPlus(LLNotifyMixin, LoggingMixin, UpdateStateMixin, Mqtt):
     """
     Helper that makes using MQ as easy as using normal AD events.
 
