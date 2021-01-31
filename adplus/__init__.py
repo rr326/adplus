@@ -43,6 +43,8 @@ from .args import normalized_args, weekdays_as_set  # noqa
 from .logbook import LoggingMixin
 from .mqplus import MqPlus  # noqa
 from .utils import ConfigException, UpdateStateMixin  # noqa
+from .ll_notify import LLNotifyMixin
+
 
 #
 # Reload all modules
@@ -60,9 +62,9 @@ for module in globals().copy().values():
 #
 
 
-class Hass(_Hass, LoggingMixin, UpdateStateMixin):
+class Hass(LLNotifyMixin, LoggingMixin, UpdateStateMixin, _Hass):
     pass
 
 
-class Mqtt(_Mqtt, LoggingMixin, UpdateStateMixin):
+class Mqtt(LLNotifyMixin, LoggingMixin, UpdateStateMixin, _Hass):
     pass
