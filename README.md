@@ -77,6 +77,7 @@ So now, `self.update_state()` will update only changed states.
 
 ## ll_notify Helpers
 [ll_notify](https://github.com/rr326/ha_ll_notify) Is a component that adds front-end notifications to Lovelace. AdPlus adds simple helper functions:
+* `self.ll_success(message, **kwargs)`
 * `self.ll_warning(message, **kwargs)`
 * `self.ll_error(message, **kwargs)`
 * `self.ll_alert(message, **kwargs)`
