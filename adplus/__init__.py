@@ -42,7 +42,8 @@ from appdaemon.plugins.mqtt.mqttapi import Mqtt as _Mqtt
 from .args import normalized_args, weekdays_as_set  # noqa
 from .logbook import LoggingMixin
 from .mqplus import MqPlus  # noqa
-from .utils import ConfigException, UpdateStateMixin  # noqa
+from .utils import ConfigException  # noqa
+from .state import UpdateStateMixin  # noqa
 from .ll_notify import LLNotifyMixin
 
 

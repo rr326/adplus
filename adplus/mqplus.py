@@ -6,7 +6,7 @@ from appdaemon.plugins.mqtt.mqttapi import Mqtt
 from appdaemon.utils import sync_wrapper
 
 from .logbook import LoggingMixin
-from .utils import UpdateStateMixin
+from .state import UpdateStateMixin
 from .ll_notify import LLNotifyMixin
 
 
