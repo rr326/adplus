@@ -5,9 +5,9 @@ import json
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
 from appdaemon.utils import sync_wrapper
 
+from .ll_notify import LLNotifyMixin
 from .logbook import LoggingMixin
 from .state import UpdateStateMixin
-from .ll_notify import LLNotifyMixin
 
 
 class MqPlus(LLNotifyMixin, LoggingMixin, UpdateStateMixin, Mqtt):

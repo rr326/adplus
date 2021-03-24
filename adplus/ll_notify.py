@@ -1,8 +1,10 @@
-from appdaemon.plugins.hass.hassapi import Hass
 from functools import partial
+
+from appdaemon.plugins.hass.hassapi import Hass
 
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
+
 
 class LLNotifyMixin(Hass):
     """
@@ -27,6 +29,7 @@ class LLNotifyMixin(Hass):
         * ll_ping
 
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -64,7 +67,6 @@ class LLNotifyMixin(Hass):
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method))
         for method in METHODS_NO_MSG:
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method, ""))
-
 
     @staticmethod
     def noop(*args, **kwargs):
