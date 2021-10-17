@@ -4,6 +4,8 @@ from appdaemon.adapi import ADAPI
 
 from functools import partial
 
+from appdaemon.plugins.hass.hassapi import Hass
+
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
 
@@ -30,6 +32,7 @@ class LLNotifyMixin(adbase.ADBase):
         * ll_ping
 
     """
+
     def __init__(self, *args, **kwargs):
         super(adbase.ADBase, self).__init__(*args, **kwargs)
 
@@ -75,7 +78,6 @@ class LLNotifyMixin(adbase.ADBase):
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method))
         for method in METHODS_NO_MSG:
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method, ""))
-
 
     @staticmethod
     def __noop(*args, **kwargs):
