@@ -1,10 +1,13 @@
 from appdaemon.plugins.hass.hassapi import Hass
+from appdaemon import adbase
+from appdaemon.adapi import ADAPI
+
 from functools import partial
 
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
 
-class LLNotifyMixin(Hass):
+class LLNotifyMixin(adbase.ADBase):
     """
     Helper function to make it easy to call add alerts to Lovelace.
 
@@ -28,37 +31,45 @@ class LLNotifyMixin(Hass):
 
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(adbase.ADBase, self).__init__(*args, **kwargs)
 
         # For static analysis
-        self.ll_success = self.noop
-        self.ll_warning = self.noop
-        self.ll_error = self.noop
-        self.ll_alert = self.noop
-        self.ll_confirm = self.noop
-        self.ll_dismiss_all = self.noop
-        self.ll_notify = self.noop
-        self.ll_message = self.noop
-        self.ll_ping = self.noop
+        self.ll_success = self.__noop
+        self.ll_warning = self.__noop
+        self.ll_error = self.__noop
+        self.ll_alert = self.__noop
+        self.ll_confirm = self.__noop
+        self.ll_dismiss_all = self.__noop
+        self.ll_notify = self.__noop
+        self.ll_message = self.__noop
+        self.ll_ping = self.__noop
 
-        if self.ll_notify_component_installed():
-            self.add_methods()
+    # def initialize(self):
+    #     super().initialize()
+
+        adbase = self.get_ad_api()
+
+        if self.__ll_notify_component_installed():
+            self.__add_methods()
         else:
-            self.log(
+            adbase.log(
                 "ll_notify component not installed. Any calls to ll_notify will be noops.",
                 level="WARNING",
             )
 
-    def ll_notify_component_installed(self) -> bool:
-        for service in self.list_services():
+    def __ll_notify_component_installed(self) -> bool:
+        adbase = self.get_ad_api()
+
+        for service in adbase.list_services():
             if service.get("domain") == "ll_notify":
                 return True
         return False
 
-    def add_methods(self):
+    def __add_methods(self):
         def call_ll_notify_service(method, message, *args, **kwargs):
             """Pass through directly via call_service"""
-            return self.call_service(f"ll_notify/{method}", message=message, **kwargs)
+            adbase = self.get_ad_api()
+            return adbase.call_service(f"ll_notify/{method}", message=message, **kwargs)
 
         for method in METHODS:
             setattr(self, "ll_" + method, partial(call_ll_notify_service, method))
@@ -67,5 +78,5 @@ class LLNotifyMixin(Hass):
 
 
     @staticmethod
-    def noop(*args, **kwargs):
+    def __noop(*args, **kwargs):
         pass

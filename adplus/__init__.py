@@ -61,10 +61,14 @@ for module in globals().copy().values():
 # Monkey Patch - Logging, UpdateSate
 #
 
+"""
 
-class Hass(LLNotifyMixin, LoggingMixin, UpdateStateMixin, _Hass):
+
+"""
+
+class Hass(_Hass, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
     pass
 
 
-class Mqtt(LLNotifyMixin, LoggingMixin, UpdateStateMixin, _Hass):
+class Mqtt(_Hass, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
     pass
