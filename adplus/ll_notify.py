@@ -1,15 +1,15 @@
-from appdaemon.plugins.hass.hassapi import Hass
-from appdaemon import adbase
-from appdaemon.adapi import ADAPI
-
+"""
+LLNotifyMixin
+"""
 from functools import partial
 
-from appdaemon.plugins.hass.hassapi import Hass
+from appdaemon import adbase as ad
+
 
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
 
-class LLNotifyMixin(adbase.ADBase):
+class LLNotifyMixin(ad.ADBase):
     """
     Helper function to make it easy to call add alerts to Lovelace.
 
@@ -34,7 +34,7 @@ class LLNotifyMixin(adbase.ADBase):
     """
 
     def __init__(self, *args, **kwargs):
-        super(adbase.ADBase, self).__init__(*args, **kwargs)
+        super(ad.ADBase, self).__init__(*args, **kwargs)
 
         # For static analysis
         self.ll_success = self.__noop
