@@ -3,9 +3,7 @@ LLNotifyMixin
 """
 from functools import partial
 
-import appdaemon.adbase as adbase
 import appdaemon.adapi as adapi
-
 
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
