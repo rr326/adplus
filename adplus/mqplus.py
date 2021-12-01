@@ -10,7 +10,7 @@ from .logbook import LoggingMixin
 from .state import UpdateStateMixin
 
 
-class MqPlus(LLNotifyMixin, LoggingMixin, UpdateStateMixin, Mqtt):
+class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
     """
     Helper that makes using MQ as easy as using normal AD events.
 
@@ -72,7 +72,9 @@ class MqPlus(LLNotifyMixin, LoggingMixin, UpdateStateMixin, Mqtt):
     MQ_RETAIN = False
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        Mqtt.__init__(self, *args, **kwargs)
+        LLNotifyMixin.__init__(self, self.get_ad_api())
+
         self.namespace = self.config["plugins"]["mqtt"]["namespace"]
         self._registered_listeners = {}  # see _listener_register
         atexit.register(self.cleanup)

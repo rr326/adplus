@@ -27,32 +27,33 @@ Create new logger that logs:
 3. HA Logbook: call_service(logbook/log, ...)
 
 """
-from appdaemon import adbase
+import appdaemon.adbase as adbase
+
 
 class LoggingMixin(adbase.ADBase):
     def debug(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="DEBUG")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="DEBUG")
 
     def info(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="INFO")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="INFO")
 
     def warn(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="WARNING")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="WARNING")
 
     def warning(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="WARNING")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="WARNING")
 
     def error(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="ERROR")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="ERROR")
 
     def critical(self, *args, **kwargs):
-        adbase = self.get_ad_api()
-        return adbase.log(*args, **kwargs, level="CRITICAL")
+        my_adapi = self.get_ad_api()
+        return my_adapi.log(*args, **kwargs, level="CRITICAL")
 
     def lb_debug(self, message, *args, **kwargs):
         return self._write_logbook(message, *args, level="DEBUG", **kwargs)
@@ -80,14 +81,14 @@ class LoggingMixin(adbase.ADBase):
         Note - this only allows a single, pre-merged message.
         This will NOT work as implemented: x.log('{value1}', {'value1': 'value'})
         """
-        adbase = self.get_ad_api()
-        adbase.log(message)
-        if adbase.get_user_log("logbook"):
-            adbase.log(message, log="logbook")
+        my_adapi = self.get_ad_api()
+        my_adapi.log(message)
+        if my_adapi.get_user_log("logbook"):
+            my_adapi.log(message, log="logbook")
 
         kwargs = {}
         if entity_id:
             kwargs["entity_id"] = entity_id
         if domain:
             kwargs["domain"] = domain
-        adbase.call_service("logbook/log", name=self.name, message=message, **kwargs)
+        my_adapi.call_service("logbook/log", name=self.name, message=message, **kwargs)
