@@ -3,22 +3,18 @@ LLNotifyMixin
 """
 from functools import partial
 
-import appdaemon.adapi as adapi
+import appdaemon.adbase as adbase
 
 METHODS = ["success", "warning", "error", "alert", "confirm", "notify", "message"]
 METHODS_NO_MSG = ["dismiss_all", "ping"]
 
 
-class LLNotifyMixin:
+class LLNotifyMixin(adbase.ADBase):
     """
     Helper function to make it easy to call add alerts to Lovelace.
 
-    ** Need to explicity call both __init__() functions! **
-
     class Hass(_Hass, LLNotifyMixin,):
-        def __init__(self, *args, **kwargs):
-            _Hass.__init__(self, *args, **kwargs) # <== NECESSARY! (super() ok)
-            LLNotifyMixin.__init__(self, self.get_ad_api()) # <== NECESSARY!
+        pass
 
     class MyApp(MyHass):
         def initialize(self):
@@ -37,46 +33,42 @@ class LLNotifyMixin:
 
     """
 
-    def __init__(self, my_adapi: adapi.ADAPI):
-        # For static analysis
-        self.ll_success = self.__noop
-        self.ll_warning = self.__noop
-        self.ll_error = self.__noop
-        self.ll_alert = self.__noop
-        self.ll_confirm = self.__noop
-        self.ll_dismiss_all = self.__noop
-        self.ll_notify = self.__noop
-        self.ll_message = self.__noop
-        self.ll_ping = self.__noop
+    def ll_success(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_success", message, **kwargs)
 
-        self.__ll_my_adapi = my_adapi
+    def ll_warning(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_warning", message, **kwargs)
 
-        if self.__ll_notify_component_installed():
-            self.__add_methods()
-        else:
-            self.__ll_my_adapi.log(
-                "ll_notify component not installed. Any calls to ll_notify will be noops.",
-                level="WARNING",
-            )
+    def ll_error(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_error", message, **kwargs)
+
+    def ll_alert(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_alert", message, **kwargs)
+
+    def ll_confirm(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_confirm", message, **kwargs)
+
+    def ll_notify(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_notify", message, **kwargs)
+
+    def ll_message(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_message", message, **kwargs)
+
+    def ll_dismiss_all(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_dismiss_all", "", **kwargs)
+
+    def ll_ping(self, message, **kwargs):
+        return self.__call_ll_notify_service("ll_ping", "", **kwargs)
+
+    def __call_ll_notify_service(self, method, message, **kwargs):
+        if not self.__ll_notify_component_installed():
+            return
+        return self.get_ad_api().call_service(
+            f"ll_notify/{method}", message=message, **kwargs
+        )
 
     def __ll_notify_component_installed(self) -> bool:
-        for service in self.__ll_my_adapi.list_services():
+        for service in self.get_ad_api().list_services():
             if service.get("domain") == "ll_notify":
                 return True
         return False
-
-    def __add_methods(self):
-        def call_ll_notify_service(method, message, *args, **kwargs):
-            """Pass through directly via call_service"""
-            return self.__ll_my_adapi.call_service(
-                f"ll_notify/{method}", message=message, **kwargs
-            )
-
-        for method in METHODS:
-            setattr(self, "ll_" + method, partial(call_ll_notify_service, method))
-        for method in METHODS_NO_MSG:
-            setattr(self, "ll_" + method, partial(call_ll_notify_service, method, ""))
-
-    @staticmethod
-    def __noop(*args, **kwargs):
-        pass

@@ -72,8 +72,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
     MQ_RETAIN = False
 
     def __init__(self, *args, **kwargs):
-        Mqtt.__init__(self, *args, **kwargs)
-        LLNotifyMixin.__init__(self, self.get_ad_api())
+        super().__init__(*args, **kwargs)
 
         self.namespace = self.config["plugins"]["mqtt"]["namespace"]
         self._registered_listeners = {}  # see _listener_register

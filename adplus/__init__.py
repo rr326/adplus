@@ -63,12 +63,8 @@ for module in globals().copy().values():
 
 
 class Hass(_Hass, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
-    def __init__(self, *args, **kwargs):
-        _Hass.__init__(self, *args, **kwargs)
-        LLNotifyMixin.__init__(self, self.get_ad_api())
+    pass
 
 
 class Mqtt(_Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
-    def __init__(self, *args, **kwargs):
-        _Mqtt.__init__(self, *args, **kwargs)
-        LLNotifyMixin.__init__(self, self.get_ad_api())
+    pass
