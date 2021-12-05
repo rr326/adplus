@@ -34,31 +34,31 @@ class LLNotifyMixin(adbase.ADBase):
     """
 
     def ll_success(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_success", message, **kwargs)
+        return self.__call_ll_notify_service("success", message, **kwargs)
 
     def ll_warning(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_warning", message, **kwargs)
+        return self.__call_ll_notify_service("warning", message, **kwargs)
 
     def ll_error(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_error", message, **kwargs)
+        return self.__call_ll_notify_service("error", message, **kwargs)
 
     def ll_alert(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_alert", message, **kwargs)
+        return self.__call_ll_notify_service("alert", message, **kwargs)
 
     def ll_confirm(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_confirm", message, **kwargs)
+        return self.__call_ll_notify_service("confirm", message, **kwargs)
 
     def ll_notify(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_notify", message, **kwargs)
+        return self.__call_ll_notify_service("notify", message, **kwargs)
 
     def ll_message(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_message", message, **kwargs)
+        return self.__call_ll_notify_service("message", message, **kwargs)
 
     def ll_dismiss_all(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_dismiss_all", "", **kwargs)
+        return self.__call_ll_notify_service("dismiss_all", "", **kwargs)
 
     def ll_ping(self, message, **kwargs):
-        return self.__call_ll_notify_service("ll_ping", "", **kwargs)
+        return self.__call_ll_notify_service("ping", "", **kwargs)
 
     def __call_ll_notify_service(self, method, message, **kwargs):
         if not self.__ll_notify_component_installed():
