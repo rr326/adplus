@@ -10,7 +10,7 @@ class _Loggable(Protocol):
 
 class UpdateStateMixin(_Loggable):
     @sync_wrapper
-    async def update_state(self, entity, state=None, attributes={}):
+    async def update_state(self, entity, state=None, attributes=None):
         """
         In AD, when you update a state, it overwrites all the attributes (but only sometimes!)
         So if you want to set_state="on" but don't want to overwrite "friendly_name", use this:
@@ -19,10 +19,12 @@ class UpdateStateMixin(_Loggable):
 
         update_state(self, entity, state="value", attributes={})
         """
+        if attributes is None:
+            attributes = {}
         current = await self.get_state(entity, attribute="all")  # type: ignore
-        if current == None:
+        if current is None:
             current = await self.set_state(entity, state="off")  # type: ignore
-            if current == None:
+            if current is None:
                 self.log(f"Unable to create state for {entity}")
                 return current
         merged_state = state if state else current["state"]
@@ -39,7 +41,7 @@ class EnsureStateMixin(_Loggable):
         self,
         entity,
         state=None,
-        attributes={},
+        attributes=None,
         success_cb=None,
         error_cb=None,
         already_set_cb=None,

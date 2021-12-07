@@ -82,17 +82,17 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
         self.ha_fire_event = super().fire_event
         self.ha_cancel_listen_event = super().cancel_listen_event
 
-    def listen_event(*args, **kwargs):
+    def listen_event(self, *args, **kwargs):
         raise RuntimeError(
             "Do not use listen_event directly when using MqPlus. Instead use mq_listen or ha_listen "
         )
 
-    def cancel_listen_event(*args, **kwargs):
+    def cancel_listen_event(self, *args, **kwargs):
         raise RuntimeError(
             "Do not use cancel_listen_event directly when using MqPlus. Instead use mq_cancel_listen or ha_cancel_listen "
         )
 
-    def fire_event(*args, **kwargs):
+    def fire_event(self, *args, **kwargs):
         raise RuntimeError(
             "Do not use fire directly when using MqPlus. Instead use mq_fire or ha_fire "
         )
@@ -136,7 +136,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
             raise RuntimeError(f"Do not set namespace. Will cause errors: {kwargs}")
         if "topic" in kwargs:
             raise RuntimeError(f"Do not set topic. The event IS the topic {kwargs}")
-        if type(event) is not str:
+        if not isinstance(event, str) :
             raise RuntimeError(
                 f"Event must be a string got: {event} - type: {type(event)}"
             )
@@ -160,7 +160,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
                 "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!",
                 level="WARNING",
             )
-            cancel_handle = cancel_handle._result
+            cancel_handle = cancel_handle._result # pylint: disable=protected-access
         self._listener_register(event, cancel_handle)
 
         return cancel_handle
@@ -193,7 +193,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
         elif (
             len(keys) == 1
             and keys[0] == "message"
-            and type(cleanargs["message"]) is str
+            and isinstance(cleanargs["message"], str)
         ):
             payload = cleanargs["message"]
         else:

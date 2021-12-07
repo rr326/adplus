@@ -54,10 +54,10 @@ class LLNotifyMixin(adbase.ADBase):
     def ll_message(self, message, **kwargs):
         return self.__call_ll_notify_service("message", message, **kwargs)
 
-    def ll_dismiss_all(self, message, **kwargs):
+    def ll_dismiss_all(self, **kwargs):
         return self.__call_ll_notify_service("dismiss_all", "", **kwargs)
 
-    def ll_ping(self, message, **kwargs):
+    def ll_ping(self, **kwargs):
         return self.__call_ll_notify_service("ping", "", **kwargs)
 
     def __call_ll_notify_service(self, method, message, **kwargs):
