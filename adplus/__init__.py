@@ -62,9 +62,13 @@ for module in globals().copy().values():
 #
 
 
-class Hass(_Hass, LLNotifyMixin, LoggingMixin, UpdateStateMixin): # pylint: disable=too-many-ancestors
+class Hass(
+    _Hass, LLNotifyMixin, LoggingMixin, UpdateStateMixin
+):  # pylint: disable=too-many-ancestors
     pass
 
 
-class Mqtt(_Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin): # pylint: disable=too-many-ancestors
+class Mqtt(
+    _Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin
+):  # pylint: disable=too-many-ancestors
     pass

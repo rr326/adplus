@@ -136,7 +136,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
             raise RuntimeError(f"Do not set namespace. Will cause errors: {kwargs}")
         if "topic" in kwargs:
             raise RuntimeError(f"Do not set topic. The event IS the topic {kwargs}")
-        if not isinstance(event, str) :
+        if not isinstance(event, str):
             raise RuntimeError(
                 f"Event must be a string got: {event} - type: {type(event)}"
             )
@@ -160,7 +160,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
                 "Programming warning: MqPlus.listen_event is getting a Task returned, not a value!",
                 level="WARNING",
             )
-            cancel_handle = cancel_handle._result # pylint: disable=protected-access
+            cancel_handle = cancel_handle._result  # pylint: disable=protected-access
         self._listener_register(event, cancel_handle)
 
         return cancel_handle

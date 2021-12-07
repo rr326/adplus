@@ -1,7 +1,6 @@
 """
 LLNotifyMixin
 """
-from functools import partial
 
 import appdaemon.adbase as adbase
 
