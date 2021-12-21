@@ -76,7 +76,9 @@ class LoggingMixin(adbase.ADBase):
     def lb_critical(self, message, *args, **kwargs):
         return self._write_logbook(message, *args, level="CRITICAL", **kwargs)
 
-    def _write_logbook(self, message, level=None, entity_id=None, domain=None):
+    def _write_logbook(
+        self, message, level=None, entity_id=None, domain=None
+    ):  # pylint: disable=unused-argument
         """
         Note - this only allows a single, pre-merged message.
         This will NOT work as implemented: x.log('{value1}', {'value1': 'value'})
