@@ -1,5 +1,39 @@
+# Adplus
+
+## 1/22/23 IMPORTANT - DOES NOT WORK IN `--EDITABLE MODE`
+
+** Installed as NON-editable mode. **
+
+* Currently installed as ` pip install appdaemon_proj/conf/apps/adplus`
+* In other words, if you make changes to adplus, you need to restart
+  the appdaemon docker container, which *should* reinstall it.
+
+### Explanation
+
+* This is a long, complex problem. I don't completely understand it.
+* Bottom line is that **`pip`** 22.3 brought in a change of behavior
+  that broke the way my appdaemon worked. With 21.2.4 everything was
+  fine. 
+* Somehow the new style of pip distributions broke the ability to properly
+  import adplus. Example:
+    ```
+    Error:      adplus.importlib.reload(adplus)
+    Error:  AttributeError: module 'adplus' has no attribute 'importlib'
+    ``` 
+* If you install it without editable, it works fine.
+* I *suspect* it has something to do with [this bug](https://github.com/pypa/pip/issues/11467) 
+  but when I tried to reproduce it with their repo, it showed differnt functionlity. So maybe not.
+* Also, interestingly, VSCode saw the same issue. It would not properly 
+  recognize the `import adplus` when done with `--editable` but would when 
+  not editable.
+* I've wasted an entire week on this! So just going to punt on it. 
+* Hopefully at some point between pip, python, and appdaemon, it will just work again. 
+
 # TODO
-**Programming warning: MqPlus.listen_event is getting a Task returned, not a value!**
+* Go through all of adplus. Remove / simplify what I don't use. 
+  That might be most of it!
+* Especially the way I do reload. 
+* **Programming warning: MqPlus.listen_event is getting a Task returned, not a value!**
 
 # AdPlus
 AppdaemonPlus - Support functions for AppDaemon

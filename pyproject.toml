@@ -1,3 +1,22 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "AdPlus"
+version = "0.0.1"
+description = "Appdaemon Plus - Support Functions for Appdaemon"
+authors = [
+   {name= "Ross Rosen", email= "rrosen326@gmail.com"}
+]
+requires-python = ">=3.8.0"
+dependencies = [
+    "appdaemon", 
+    "cerberus"
+]
+
+[project.urls]
+"Homepage" =  "https://github.com/rr326/adplus"
+
+
