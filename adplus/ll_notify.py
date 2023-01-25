@@ -63,7 +63,7 @@ class LLNotifyMixin(adbase.ADBase):
         if not self.__ll_notify_component_installed():
             return
         return self.get_ad_api().call_service(
-            f"ll_notify/{method}", message=message, **kwargs
+            f"ll_notify/{method}", message=message, return_result=True, **kwargs
         )
 
     def __ll_notify_component_installed(self) -> bool:

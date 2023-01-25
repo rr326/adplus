@@ -93,4 +93,4 @@ class LoggingMixin(adbase.ADBase):
             kwargs["entity_id"] = entity_id
         if domain:
             kwargs["domain"] = domain
-        my_adapi.call_service("logbook/log", name=self.name, message=message, **kwargs)
+        my_adapi.call_service("logbook/log", name=self.name, message=message, return_result=False, **kwargs)
