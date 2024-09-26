@@ -7,6 +7,7 @@
 * Currently installed as ` pip install appdaemon_proj/conf/apps/adplus`
 * In other words, if you make changes to adplus, you need to restart
   the appdaemon docker container, which *should* reinstall it.
+* Note - the fix to this is in requirements.txt !
 
 ### Explanation
 
