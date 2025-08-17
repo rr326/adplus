@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from appdaemon.utils import sync_wrapper
+from appdaemon.utils import sync_decorator
 
 
 class _Loggable(Protocol):
@@ -9,7 +9,7 @@ class _Loggable(Protocol):
 
 
 class UpdateStateMixin(_Loggable):
-    @sync_wrapper
+    @sync_decorator
     async def update_state(self, entity, state=None, attributes=None):
         """
         In AD, when you update a state, it overwrites all the attributes (but only sometimes!)
@@ -36,7 +36,7 @@ class UpdateStateMixin(_Loggable):
 
 
 class EnsureStateMixin(_Loggable):
-    @sync_wrapper
+    @sync_decorator
     async def ensure_state(
         self,
         entity,

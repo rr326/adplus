@@ -3,7 +3,7 @@ import atexit
 import json
 
 from appdaemon.plugins.mqtt.mqttapi import Mqtt
-from appdaemon.utils import sync_wrapper
+from appdaemon.utils import sync_decorator
 
 from .ll_notify import LLNotifyMixin
 from .logbook import LoggingMixin
@@ -119,7 +119,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
                 f"_listener_unregister is trying to unregister a cancel_handle it does not know about: {cancel_handle}"
             )
 
-    @sync_wrapper
+    @sync_decorator
     async def mq_listen_event(self, callback, event, **kwargs):
         """
         event - 'event_string' within namespace="mqtt"
@@ -165,7 +165,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
 
         return cancel_handle
 
-    @sync_wrapper
+    @sync_decorator
     async def mq_cancel_listen_event(self, handle):
         event_name = self._registered_listeners.get(handle)
         self.log(
@@ -183,7 +183,7 @@ class MqPlus(Mqtt, LLNotifyMixin, LoggingMixin, UpdateStateMixin):
 
         self._listener_unregister(handle)
 
-    @sync_wrapper
+    @sync_decorator
     async def mq_fire_event(self, event, qos=MQ_QOS, retain=MQ_RETAIN, **kwargs):
         cleanargs = self.clean_kwargs(kwargs)
 
