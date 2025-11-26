@@ -97,6 +97,5 @@ class LoggingMixin(adbase.ADBase):
             "logbook/log",
             name=self.name,
             message=message,
-            return_result=False,
             **kwargs
         )
